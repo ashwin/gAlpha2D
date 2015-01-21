@@ -1,0 +1,115 @@
+GAlpha: A 2D Alpha Shapes using Graphics Hardware (version 1.0)
+===============================================================
+
+Developer's Guide
+-----------------
+
+Authors:
+Srinivasan Kidambi Sridharan
+Ashwin Nanjappa
+Cao Thanh Tung
+
+Copyright (c) 2012 School of Computing, National University of Singapore. 
+All rights reserved.
+
+If you use GAlpha and you like it or have comments on its usefulness etc., we 
+would love to hear from you at <tants@comp.nus.edu.sg>. You may share with us
+your experience and any possibilities that we may improve the work/code.
+
+-------------------------------------------------------------------------
+
+GAlpha is a C++ Library that utilizes graphics hardware to compute 2D Alpha Shapes and 
+Delaunay triangulation. The result is a triangle mesh, each contain the index of its 3 
+vertices and the three neighbor triangles and set of intervals augmented with it to 
+represent the whole family of Alpha Shapes.
+
+1. Files
+========
+All files which are part of the 2D Alpha Shapes are inside folder gpudt\AlphaShape\
+
+1.1 Algorithm
+-------------
+
+Alpha_Shapes_2D.cu		Exposes API's of class Alpha_Shapes_2D which computes 
+				alpha shapes from 2D Delaunay Triangulation
+
+kernel.cu			Has routines for various steps of the algorithm in GPU
+
+Alpha_Shapes_2D.h		Class Alpha_Shapes_2D and function declarations
+
+kernel.h			GPU routines declarations
+
+predicates.h			Contains a structure for exact arithmetic using Shewchuk's 
+				multiple term algorithm from http://www.cs.cmu.edu/~quake/robust.html
+
+1.2 Visualization
+-----------------
+
+Visualizer.cu			Functions of Visualizer class that visualizes the Alpha Shape family
+drawBasics.cu			Routines to draw basic shapes like triangles, circles using openGL
+
+Visualizer.h			Class Visualizer and its function declarations
+drawBasics.h			Declarations of routines to draw some basic shapes
+
+
+2. Alpha Shapes API
+===================
+
+GAlpha source code has a main class Alpha_Shapes_2D which exposes api's to take inputs which are
+2D point set and the 2D Delaunay Triangulation computed using GPU-DT.
+
+The source code main.cu gives an example of how to pass the input data set to GPU-DT, compute 2D
+Delaunay Triangulation and pass the output of GPU-DT to the object of class Alpha_Shapes_2D to
+compute the Alpha Shapes family using the Delaunay Triangulation.
+
+
+3. Stages of the Algorithm
+==========================
+
+The source code can be understood easily if you follow the steps of the algorithm (mentioned in
+the report in ../2D_GAlpha.pdf) and trace the implementation top-down from the computeAlphaShapes()
+API of class Alpha_Shapes_2D in file Alpha_Shapes_2D.cu. It implements the five steps by calling
+appropriate sub-routines:
+
+init_alpha_shapes		Initialize alpha Shapes data structures, compute point to triangle
+				map and compute tri_edge_indices data structure for representing
+				edges (For more details on tri_edge_indices, please refer to the 
+				report)
+
+compute_ro			Compute smallest circumradii enclosing of all triangles and 
+				unattached edges into a list
+
+sort_spectrum			Sort the above list precisely to form the SPECTRUM
+
+compute_intervals		Compute the intervals in which different simplices become singular,
+				regular and interior (edges, triangles, vertices)
+
+compute_master_list		Compute the master list which contains all entries of alpha for which
+				there is a change in the alpha complex
+
+
+4. In this folder
+=================	
+
+The distribution include a sample Visual Studio 2008 project using GAlpha with CUDA Toolkit 4.0 (32-bit) to compute Alpha Shapes
+for a 2D point set. The triangulation is then drawn using OpenGL, and the user can zoom in and pan around the triangle mesh. 
+
+Note: When compiling the CUDA code using Double precision, you have to enable compute capability 2.0 using the switch -sm_20. 
+
+5. Acknowledgements
+===================
+
+We acknowledge that the code in predicates.h is extracted from the file predicates.c obtained from the webpage 
+http://www.cs.cmu.edu/~quake/robust.html. The code in  cudaCCW.cu and gpudt\AlphaShapes\predicates.h is also 
+extracted from the same file, with some minor adjustment to make it work in CUDA. 
+
+----------------------------------------------------------------------------------
+Graphics, Geometry & Games Lab
+School of Computing, National University of Singapore
+Computing 1
+13 Computing Drive
+Singapore 117417
+Repulic of Singapore
+January 2011
+----------------------------------------------------------------------------------
+Please send bugs and comments to: tants@comp.nus.edu.sg
