@@ -36,13 +36,13 @@ DAMAGE.
 #include "headers.h"
 #include "../gpudt.h"
 
-#include <thrust\device_vector.h>
-#include <thrust\host_vector.h>
-#include <thrust\sort.h>
-#include <thrust\copy.h>
-#include <thrust\scan.h>
-#include <thrust\transform.h>
-#include <thrust\remove.h>
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
+#include <thrust/sort.h>
+#include <thrust/copy.h>
+#include <thrust/scan.h>
+#include <thrust/transform.h>
+#include <thrust/remove.h>
 #include <thrust/unique.h>
 
 #include "error.h"
