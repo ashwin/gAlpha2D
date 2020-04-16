@@ -169,7 +169,7 @@ const int gpudt_minus1mod3[3] = {2, 0, 1};
 /*   relies on the assumption that all triangles are aligned to four-byte    */
 /*   boundaries, so the two least significant bits of (otri).tri are zero.   */
 
-#define encode(otri)                                                          \
+#define Encode(otri)                                                          \
     (((otri).tri <<2)| (otri).orient)
 
 /* Copy an oriented triangle.                                                */
@@ -240,7 +240,7 @@ const int gpudt_minus1mod3[3] = {2, 0, 1};
 
 /* Bond two triangles together.                                              */
 #define bond(triList, otri1, otri2)                                                    \
-    if ((otri1).tri >= 0) triList[(otri1).tri].tri[(otri1).orient] = encode(otri2);                                \
-    if ((otri2).tri >= 0) triList[(otri2).tri].tri[(otri2).orient] = encode(otri1)
+    if ((otri1).tri >= 0) triList[(otri1).tri].tri[(otri1).orient] = Encode(otri2);                                \
+    if ((otri2).tri >= 0) triList[(otri2).tri].tri[(otri2).orient] = Encode(otri1)
 
 #endif
